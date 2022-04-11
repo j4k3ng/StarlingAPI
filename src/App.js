@@ -12,10 +12,9 @@ export default function App() {
     })
 
     function handleCallback(childData) {
+        //the only problem is that useEffect run the first time when is empty
         console.log(childData)
         setLoginData(childData)
-
-        //console.log(loginData) non so perche ma mi esce vuoto
     }
 
     return (
@@ -27,7 +26,12 @@ export default function App() {
                     <Login login={handleCallback} />
                 }
             </div>
-            {/* <Data parentCallback={handleCallback} /> */}
+            <div>
+                {
+                    loginData.token &&
+                    <Data parentCallback={handleCallback} />
+                }
+            </div>
         </div>
     )
 }
