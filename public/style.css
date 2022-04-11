@@ -40,7 +40,26 @@ body {
   width: 100%;
 }
 
+.calendar {
+  display: flex; 
+  flex-direction:column; 
+  align-items: center;
+  height: 65px;
+  padding: 20px;
+}
 
+.calendar--text{
+  display: flex;
+  align-items: center;
+}
+
+.calendar--dates{
+    display: flex;
+  flex-direction:row;
+  align-items: center;
+  height: 65px;
+  padding: 20px;
+}
 /* * {
   box-sizing: border-box;
 }

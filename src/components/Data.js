@@ -7,7 +7,7 @@ export default function Data(props) {
     const account_url = "accounts"
     const accountHolderName_url = "account-holder/name"
     const url = base_url + accountHolderName_url
-
+    const [showEndDate, setShowEndDate] = React.useState(false)
  
     const [input, setInput] = React.useState({
         startDate: new Date(),
@@ -20,8 +20,13 @@ export default function Data(props) {
             ...prevInput,
             [name]: value
         }))
+        setShowEndDate(true)
+        // trigger()
     }
-
+    React.useEffect(() => {
+        //Runs only when loginInput.uid change
+        trigger()
+    }, [input.startDate]);
     // function fetchData(){
     //     console.log(input)
     //     fetch(url, {
@@ -84,34 +89,43 @@ export default function Data(props) {
     }
     return (
         <div>
-            <h2>Enter the starting date</h2>
-            <TextField 
-                label="Start date"
-                variant="outlined" 
-                color="secondary" 
-                type="date"
-                name="startDate" 
-                value = {input.startDate}
-                onChange={handleChange}
-            />
-            <TextField 
-                label="End Date"
-                variant="outlined" 
-                color="secondary" 
-                type="date"
-                name="endDate" 
-                InputProps={{ readOnly: true }}
-                value = {input.endDate}
-                onChange={handleChange}
-            />
-            <Button 
-                color="primary" 
-                size="large" 
-                variant="contained"
-                onClick={trigger}
-                >   
-                Select
-            </Button>
+            <div className="calendar">
+                <h2 className="calendar--text">Enter the starting date</h2>
+                <div className="calendar--dates">
+                    <TextField className="calendar--startdate" 
+                        // label="Start date"
+                        variant="outlined" 
+                        color="secondary" 
+                        type="date"
+                        name="startDate" 
+                        value = {input.startDate}
+                        onChange={handleChange}
+                    />
+                    <div>
+                        {
+                            showEndDate &&
+                            <TextField className="calendar--enddate"
+                                // label="End Date"
+                                variant="outlined" 
+                                color="secondary" 
+                                type="date"
+                                name="endDate" 
+                                InputProps={{ readOnly: true }}
+                                value = {input.endDate}
+                                onChange={handleChange}
+                            />
+                        }
+                    </div>
+                </div>
+                <Button className="calendar--button"
+                    color="primary" 
+                    size="large" 
+                    variant="contained"
+                    // onClick={trigger}
+                    >   
+                    Select
+                </Button>
+            </div>
         </div>
     )
 }
