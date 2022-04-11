@@ -10,7 +10,8 @@ export default function Data(props) {
 
  
     const [input, setInput] = React.useState({
-        date: new Date()
+        startDate: new Date(),
+        endDate: new Date()
     })
 
     function handleChange(event) {
@@ -39,10 +40,39 @@ export default function Data(props) {
 
     // }
     function trigger(){
-        console.log(new Date(input.date))
-        let result = new Date(input.date);
+        //console.log(new Date(input.startDate).getMonth())
+        console.log(new Date(input.startDate))
+        let result = new Date(input.startDate);
         result.setDate(result.getDate() + 7);
+
+
+        let Month = result.getMonth()
+        if(Month<11){
+            Month = Month + 1
+        }else{
+            Month = 1
+        }
+        if(Month<10){
+            Month =String("0"+Month )
+        }
+        let Year = result.getFullYear()
+        let Day = result.getDate()
+        if(Day<10){
+            Day = String("0"+Day)
+        }
+
         console.log(result)
+        console.log(Month)
+        console.log(Year)
+        console.log(Day)
+
+        setInput(prevInput => ({
+            ...prevInput,
+            endDate: Year+"-"+Month+"-"+Day
+        }))
+
+        //console.log(input)
+        console.log(input.endDate)
         // console.log(input.date)
         // let day = new Date(1993,2,3)
         // day.setDate(3)
@@ -56,20 +86,22 @@ export default function Data(props) {
         <div>
             <h2>Enter the starting date</h2>
             <TextField 
+                label="Start date"
                 variant="outlined" 
                 color="secondary" 
                 type="date"
-                name="date" 
-                value = {input.date}
+                name="startDate" 
+                value = {input.startDate}
                 onChange={handleChange}
             />
             <TextField 
+                label="End Date"
                 variant="outlined" 
                 color="secondary" 
                 type="date"
-                name="date" 
+                name="endDate" 
                 InputProps={{ readOnly: true }}
-                value = {input.date}
+                value = {input.endDate}
                 onChange={handleChange}
             />
             <Button 
