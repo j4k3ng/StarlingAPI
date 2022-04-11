@@ -1,9 +1,52 @@
-* {
+body {
+  font-family: Universal Sans, sans-serif;
+  margin: 0;
+  background: white;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 65px;
+  background: #192851;
+  padding: 20px;
+}
+.header--image {
+  height: 100%;
+  margin-right: auto;
+}
+
+.header--name {
+  font-size: 1.25rem;
+  color: white;
+  margin-left: auto;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 65px;
+  padding: 20px;
+
+}
+
+.login--token {
+  width: 80%;
+  font: 80;
+}
+
+.login--button {
+  width: 100%;
+}
+
+
+/* * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: "Karla", sans-serif;
+  font-family: Universal Sans, sans-serif;
   margin: 0;
 }
 
@@ -102,4 +145,4 @@ main {
 
 .top {
   top: 0;
-}
+} */
