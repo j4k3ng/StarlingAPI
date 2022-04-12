@@ -25,7 +25,7 @@ export default function Login(props) {
     function fetchLogin(event) {
         const header = {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${loginInput.token}`
+            'Authorization': `Bearer ${loginInput.token}`,
         }
 
         Promise.all([

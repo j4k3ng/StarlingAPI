@@ -3,16 +3,24 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 export default function Data(props) {
-    const base_url = "https://api-sandbox.starlingbank.com/api/v2/"
-    const account_url = "accounts"
-    const accountHolderName_url = "account-holder/name"
-    const url = base_url + accountHolderName_url
+
     const [showEndDate, setShowEndDate] = React.useState(false)
- 
     const [input, setInput] = React.useState({
         startDate: new Date(),
         endDate: new Date()
     })
+    const [avg, setAvg] = React.useState()
+
+    function printurl(){
+        const accountUid = props.accountUid;
+        const feed_url = `https://api-sandbox.starlingbank.com/api/v2/feed/account/${accountUid}/settled-transactions-between?`
+        const time = "T00%3A00%3A00.000Z"
+        const start = "minTransactionTimestamp="+input.startDate+time
+        const end = "maxTransactionTimestamp="+input.endDate+time
+        const url = feed_url+start+"&&"+end
+        console.log(url)
+        fetchData(url)
+    }
 
     function handleChange(event) {
         const { name, value } = event.target
@@ -23,28 +31,13 @@ export default function Data(props) {
         setShowEndDate(true)
         // trigger()
     }
+
     React.useEffect(() => {
         //Runs only when loginInput.uid change
-        trigger()
+        calculateEndDate()
     }, [input.startDate]);
-    // function fetchData(){
-    //     console.log(input)
-    //     fetch(url, {
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Authorization': `Bearer ${input.token}`
-    //         }
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             props.parentCallback(data.accountHolderName)
-    //             console.log(props.parentCallback)
-    //             return setAccount(data);
-    //         })
 
-    // }
-    function trigger(){
+    function calculateEndDate(){
         //console.log(new Date(input.startDate).getMonth())
         console.log(new Date(input.startDate))
         let result = new Date(input.startDate);
@@ -87,10 +80,45 @@ export default function Data(props) {
         // let result = day.getDate()
         // console.log(new Date(result))
     }
+
+    function fetchData(url){
+        function average(array){
+            let sum = 0;
+            let count = 0;
+            for(let i = 0; i < array.length; i++){
+                console.log(i)
+                if (array[i].direction == "OUT"){
+                    count += 1
+                    console.log(array[i].amount.minorUnits)
+                    let value = parseInt(array[i].amount.minorUnits)
+                    console.log(value)
+                    sum += value  
+                    console.log("the sum is now "+sum)
+                }
+            }
+            sum = sum/100;
+            let avg = sum/count
+            avg = Math.round(avg*100)/100
+            console.log("the average is "+avg)
+            setAvg(avg)
+        }
+        fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${props.token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                average(data.feedItems)
+            })
+    }
+
     return (
         <div>
             <div className="calendar">
-                <h2 className="calendar--text">Enter the starting date</h2>
+                <h2 className="calendar--text">Select a  statement week period</h2>
                 <div className="calendar--dates">
                     <TextField className="calendar--startdate" 
                         // label="Start date"
@@ -121,10 +149,19 @@ export default function Data(props) {
                     color="primary" 
                     size="large" 
                     variant="contained"
-                    // onClick={trigger}
+                    onClick={printurl}
                     >   
                     Select
                 </Button>
+                <div>
+                    {
+                        avg &&
+                        <div>
+                            <h1> Your average out transaction is </h1>
+                            <h1>£ {avg}</h1>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     )

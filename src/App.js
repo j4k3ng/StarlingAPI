@@ -29,7 +29,7 @@ export default function App() {
             <div>
                 {
                     loginData.token &&
-                    <Data parentCallback={handleCallback} />
+                    <Data accountUid={loginData.uid} token={loginData.token}/>
                 }
             </div>
         </div>
