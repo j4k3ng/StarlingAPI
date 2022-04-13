@@ -71,7 +71,7 @@ body {
 
 .card {
   display: flex; 
-  flex-direction:row;
+  flex-direction:column;
   gap: 20px;
   overflow-x: auto; 
 }
@@ -80,6 +80,13 @@ body {
   flex-direction:row;
   gap: 20px;
   overflow-x: auto; 
+}
+
+.card--form{
+  display: flex; 
+  flex-direction:column;
+  overflow-x: auto;
+  color:#51e76f;
 }
 
 /* .card--list div[key=0]{

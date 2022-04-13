@@ -13,7 +13,7 @@ const useStyles = makeStyles ({
     },
   });
   
-export default function Goal(props) {
+export default function NewGoal(props) {
     const classes = useStyles()
 
     function printing(uid) {
@@ -22,7 +22,7 @@ export default function Goal(props) {
 
     return (
         <div className="card">
-            <Tooltip title="send">
+            <Tooltip title="create">
                 <Button className={classes.root}
                     size="large"
                     color="secondary"

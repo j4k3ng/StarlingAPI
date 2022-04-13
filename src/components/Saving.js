@@ -1,5 +1,6 @@
 import React from "react"
 import Goal from "./Goal"
+import NewGoal from "./NewGoal"
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
@@ -53,6 +54,7 @@ export default function Saving(props) {
             <div className="card--list">
                 {goal}
             </div>
+            <NewGoal goal={goal}/>
         </div>
     )
 }
