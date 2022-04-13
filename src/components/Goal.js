@@ -23,15 +23,19 @@ export default function Goal(props) {
     return (
         <div className="card">
             <Tooltip title="send">
-                <Button className={classes.root}
+                <Button 
+                    className={classes.root}
+                    style={{maxWidth: '150px', minWidth: '100px'}}
                     size="large"
                     color="secondary"
                     variant="contained"
                     onClick={printing}
                     uid={props.goal.savingsGoalUid}
-                    name={props.goal.savingsGoalUid}
+                    name={props.goal.name}
                 >
-                    {props.goal.name}
+                    {props.goal.name} <br />
+                    target: {props.goal.target.minorUnits} <br />
+                    saved: {props.goal.totalSaved.minorUnits}
                 </Button>
             </Tooltip>
             {

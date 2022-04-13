@@ -89,6 +89,14 @@ body {
   color:#51e76f;
 }
 
+.newgoal {
+  display: flex; 
+  flex-direction:column; 
+  align-items: center;
+  /* height: 65px; */
+  padding: 20px;
+}
+
 /* .card--list div[key=0]{
   background-color:yellow;
 } */

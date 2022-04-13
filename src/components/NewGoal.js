@@ -14,35 +14,96 @@ const useStyles = makeStyles ({
   });
   
 export default function NewGoal(props) {
+    const [show, setShow] = React.useState(false)
+    const accountUid = props.uid
+    const url = `https://api-sandbox.starlingbank.com/api/v2/account/${accountUid}/savings-goals`
+    const [newGoal, setNewGoal] = React.useState({
+        name: "",
+        target: ""
+    })
     const classes = useStyles()
 
-    function printing(uid) {
-        console.log(uid.currentTarget.name)
+    function handleChange(event) {
+        console.log(event)
+        const { name, value } = event.target
+        setNewGoal(prevValue => ({
+            ...prevValue,
+            [name]: value
+        }))
+    }
+
+    function printing(event) {
+        setShow(prevState => !prevState)
+    }
+
+    
+    // React.useEffect(() => {
+    //     async function newSaveandRerender(){
+    //         const newSave = await newSaving()
+    //         props.callbackHandle()
+    //     }
+    // })
+
+    function newSaving() {
+        console.log(url)
+        let newsave = fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': `Bearer ${props.token}`
+            },
+            body: JSON.stringify({
+                "name": newGoal.name,
+                "currency": "GBP",
+                "target": {
+                  "currency": "GBP",
+                  "minorUnits": newGoal.target
+                },
+                "base64EncodedPhoto": "string"
+              })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                props.callbackHandle()
+                return data
+            })
+        return newsave
     }
 
     return (
-        <div className="card">
-            <Tooltip title="create">
-                <Button className={classes.root}
+        <div className="newgoal">
+            <Tooltip title="">
+                <Button 
+                    //className={classes.root}
                     size="large"
-                    color="secondary"
+                    color="primary"
                     variant="contained"
                     onClick={printing}
-                    uid={props.goal.savingsGoalUid}
-                    name={props.goal.savingsGoalUid}
                 >
-                    {props.goal.name}
+                    New
                 </Button>
+                
             </Tooltip>
             {
-                props.goal.savingsGoalUid==0 &&
+                show &&
                 <div className="card--form">
                     <TextField
                         placeholder="Saving-goal name"
+                        name="name"
+                        onChange={handleChange}
                         >
                     </TextField> 
-                    <Button>
-                        Send
+                    <TextField
+                        placeholder="Saving-goal target "
+                        name="target"
+                        onChange={handleChange}
+                        >
+                    </TextField> 
+                    <Button
+                    onClick={newSaving}>
+                        Save
                     </Button>
                 </div>
             }

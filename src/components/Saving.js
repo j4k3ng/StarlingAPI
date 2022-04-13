@@ -8,26 +8,28 @@ export default function Saving(props) {
     const accountUid = props.accountUid
     const url = `https://api-sandbox.starlingbank.com/api/v2/account/${accountUid}/savings-goals`
     const [goal, setGoal] = React.useState([]);
-
+    const [renderFromChild, setRenderFromChild] = React.useState(false)
+    
     React.useEffect(() => {
         //Runs only when accountUid update or logindata in general
         async function getData() {
             const fetchedSavingArray = await fetchSaving()
             console.log(fetchedSavingArray)
-            fetchedSavingArray.unshift({ name: "new saving", savingsGoalUid: 0 })
+            //this line is used to attach the new saving 
+            //fetchedSavingArray.unshift({ name: "new saving", savingsGoalUid: 0 })
             const cards = fetchedSavingArray.map(item => {
                 console.log(item)
                 return (
                     <Goal
                         goal={item}
-                        // uid={item.savingsGoalUid}
                     />
                 )
             })
-            setGoal(prevValue => [...prevValue, cards])
+            setGoal(cards)
+            // setGoal(prevValue => [...prevValue, cards])
         }
         getData()
-    }, [accountUid]);
+    }, [accountUid,renderFromChild]);
 
     function fetchSaving() {
         console.log(url)
@@ -54,7 +56,13 @@ export default function Saving(props) {
             <div className="card--list">
                 {goal}
             </div>
-            <NewGoal goal={goal}/>
+            <NewGoal 
+                goal={goal} 
+                uid={accountUid} 
+                token={props.token}
+                callbackHandle={()=>{
+                    setRenderFromChild(prevValue => !prevValue)
+                }}/>
         </div>
     )
 }
