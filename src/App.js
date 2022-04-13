@@ -2,19 +2,35 @@ import React from "react"
 import Header from "./components/Header"
 import Data from "./components/Data"
 import Login from "./components/Login"
+import Saving from "./components/Saving"
 
 export default function App() {
     
     const [loginData, setLoginData] = React.useState({
         token: "",
         uid: "",
-        name: ""
+        name: "",
     })
+    const [average, setAverage] = React.useState()
 
-    function handleCallback(childData) {
+    function loginCallback(childData) {
         //the only problem is that useEffect run the first time when is empty
+
+        // const handleSomething = (values) => {
+        //     values.map((value) => {
+        //       setMyState((oldValue) => [...oldValue, { key: value.dataWhatYouWant }]);
+        //     }
+        // }}
+
+        // let keys = Object.keys(childData);
+        // console.log(childData)
         console.log(childData)
         setLoginData(childData)
+    }
+
+    function averageCallback(childData){
+        console.log(childData)
+        setAverage(childData)
     }
 
     return (
@@ -23,13 +39,19 @@ export default function App() {
             <div>
                 {
                     !loginData.token &&
-                    <Login login={handleCallback} />
+                    <Login login={loginCallback} />
                 }
             </div>
             <div>
                 {
                     loginData.token &&
-                    <Data accountUid={loginData.uid} token={loginData.token}/>
+                    <Data accountUid={loginData.uid} token={loginData.token} average={averageCallback}/>
+                }
+            </div>
+            <div> 
+                {
+                    average &&
+                    <Saving accountUid={loginData.uid} token={loginData.token}/>
                 }
             </div>
         </div>

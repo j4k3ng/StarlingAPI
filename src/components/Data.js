@@ -9,7 +9,7 @@ export default function Data(props) {
         startDate: new Date(),
         endDate: new Date()
     })
-    const [avg, setAvg] = React.useState()
+    const [average, setAvg] = React.useState()
 
     function printurl(){
         const accountUid = props.accountUid;
@@ -82,14 +82,24 @@ export default function Data(props) {
     }
 
     function fetchData(url){
+        fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${props.token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                average(data.feedItems)
+            })
+
         function average(array){
             let sum = 0;
             let count = 0;
             for(let i = 0; i < array.length; i++){
-                console.log(i)
                 if (array[i].direction == "OUT"){
                     count += 1
-                    console.log(array[i].amount.minorUnits)
                     let value = parseInt(array[i].amount.minorUnits)
                     console.log(value)
                     sum += value  
@@ -102,19 +112,13 @@ export default function Data(props) {
             console.log("the average is "+avg)
             setAvg(avg)
         }
-        fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${props.token}`
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                average(data.feedItems)
-            })
     }
 
+    React.useEffect(() => {
+        //Runs only when average updates
+        props.average(average)
+    }, [average]);
+    
     return (
         <div>
             <div className="calendar">
@@ -155,10 +159,10 @@ export default function Data(props) {
                 </Button>
                 <div>
                     {
-                        avg &&
+                        average &&
                         <div>
                             <h1> Your average out transaction is </h1>
-                            <h1>£ {avg}</h1>
+                            <h1>£ {average}</h1>
                         </div>
                     }
                 </div>

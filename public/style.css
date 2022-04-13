@@ -26,7 +26,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 65px;
+  /* height: 65px; */
   padding: 20px;
 
 }
@@ -44,7 +44,7 @@ body {
   display: flex; 
   flex-direction:column; 
   align-items: center;
-  height: 65px;
+  /* height: 65px; */
   padding: 20px;
 }
 
@@ -57,9 +57,36 @@ body {
     display: flex;
   flex-direction:row;
   align-items: center;
-  height: 65px;
+  /* height: 65px; */
   padding: 20px;
 }
+
+.saving {
+  display: flex; 
+  flex-direction:column; 
+  align-items: center;
+  /* height: 65px; */
+  padding: 20px;
+}
+
+.card {
+  display: flex; 
+  flex-direction:row;
+  gap: 20px;
+  overflow-x: auto; 
+}
+.card--list {
+  display: flex; 
+  flex-direction:row;
+  gap: 20px;
+  overflow-x: auto; 
+}
+
+/* .card--list div[key=0]{
+  background-color:yellow;
+} */
+
+
 /* * {
   box-sizing: border-box;
 }
