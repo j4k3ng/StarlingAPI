@@ -71,6 +71,7 @@ export default function NewGoal(props) {
             <Tooltip title="">
                 <Button 
                     //className={classes.root}
+                    style={{ maxWidth: '550px', minWidth: '150px', minHeight:'50px'}}
                     size="large"
                     color="primary"
                     variant="contained"
@@ -100,11 +101,10 @@ export default function NewGoal(props) {
                         >
                     </TextField> 
                     <Button
-                    // onClick={newSaving}>
-                    onClick={() => {
-                        if(newGoal.target!=0){
-                            newSaving()
-                        }
+                        onClick={() => {
+                            if(newGoal.target!=0){
+                                newSaving()
+                            }
                         }}>
                         Save
                     </Button>

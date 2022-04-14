@@ -3,7 +3,8 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
-
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 const useStyles = makeStyles({
     root: {
         '&:hover': {
@@ -17,6 +18,8 @@ const useStyles = makeStyles({
 
 export default function Goal(props) {
     const classes = useStyles()
+    const [sent, setSent] = React.useState(false)
+    const [noFounds, setNoFounds] = React.useState(false)
 
     function generateUUID() { // Public Domain/MIT
         var d = new Date().getTime();//Timestamp
@@ -52,17 +55,24 @@ export default function Goal(props) {
                 }
             })
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                props.callbackHandle()
-                return data
+            .then(response => {
+                console.log(response)
+                if(response.status==400){
+                    console.log("errore 400")
+                    setNoFounds(true)
+                    return                
+                }
+                return response.json()
+            })
+            .then(data => { 
+                if(data){
+                    console.log(data)
+                    props.callbackHandle()
+                    setSent(true)
+                    return data
+                }
             })
         return send
-    }
-
-    function printing(event) {
-        console.log(event.currentTarget.id)
     }
 
     return (
@@ -97,6 +107,23 @@ export default function Goal(props) {
                     </Button>
                 </div>
             }
+            <div> 
+                {
+                    noFounds &&
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        <strong>not enough balance</strong>
+                    </Alert>
+                }
+            </div>
+            <div>
+                {
+                    sent &&
+                    <Alert severity="success">
+                    </Alert>
+                }
+            </div>
         </div>
+
     )
 }

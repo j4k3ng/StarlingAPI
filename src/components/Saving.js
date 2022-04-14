@@ -55,9 +55,7 @@ export default function Saving(props) {
 
     return (
         <div className="saving">
-            <div>
-                <h2> Send this amount into an existing saving or create a new one </h2>
-            </div>
+            <h1 className="saving--title"> Send this amount into an existing saving account or create a new one </h1>
             <div className="goal--list">
                 {goal}
             </div>

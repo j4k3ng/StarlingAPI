@@ -178,12 +178,10 @@ export default function Data(props) {
                     {
                         average && noDataAvailable==false &&
                         <div>
-                            <h1>Your average out transaction is</h1>
-                            <h1>£ {average} </h1>
+                            <h2>your weekly average expense is <h1> £ {average} </h1></h2>
+                            
                         </div>
                     }
-                </div>
-                <div>
                     {
                         noDataAvailable &&
                         <h1>No transactions found</h1>

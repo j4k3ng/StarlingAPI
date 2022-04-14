@@ -63,6 +63,10 @@ body {
   padding: 20px;
 }
 
+.saving--title {
+  padding: 20px;
+}
+
 .goal {
   display: flex; 
   flex-direction:column;
@@ -83,14 +87,14 @@ body {
   display: flex; 
   flex-direction:column;
   overflow-x: auto;
-  color:#51e76f;
+  padding: 20px;
 }
 
 .newgoal {
   display: flex; 
   flex-direction:column; 
   align-items: center;
-  padding: 20px;
+  padding: 40px;
 }
 
 /* .card--list div[key=0]{
