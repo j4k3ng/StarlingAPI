@@ -78,6 +78,7 @@ body {
 .card--list {
   display: flex; 
   flex-direction:row;
+  flex-flow: wrap;
   gap: 20px;
   overflow-x: auto; 
 }

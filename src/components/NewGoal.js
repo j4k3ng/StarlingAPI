@@ -19,33 +19,27 @@ export default function NewGoal(props) {
     const url = `https://api-sandbox.starlingbank.com/api/v2/account/${accountUid}/savings-goals`
     const [newGoal, setNewGoal] = React.useState({
         name: "",
-        target: ""
+        target: ""  
     })
     const classes = useStyles()
 
     function handleChange(event) {
         console.log(event)
         const { name, value } = event.target
-        setNewGoal(prevValue => ({
+        setNewGoal(prevValue => {
+            let obj = { 
             ...prevValue,
             [name]: value
-        }))
+            }
+            return obj
+        })
     }
 
     function printing(event) {
         setShow(prevState => !prevState)
     }
 
-    
-    // React.useEffect(() => {
-    //     async function newSaveandRerender(){
-    //         const newSave = await newSaving()
-    //         props.callbackHandle()
-    //     }
-    // })
-
     function newSaving() {
-        console.log(url)
         let newsave = fetch(url, {
             method: 'PUT',
             headers: {
@@ -54,13 +48,13 @@ export default function NewGoal(props) {
                 'Authorization': `Bearer ${props.token}`
             },
             body: JSON.stringify({
-                "name": newGoal.name,
-                "currency": "GBP",
-                "target": {
-                  "currency": "GBP",
-                  "minorUnits": newGoal.target
+                name: newGoal.name,
+                currency: "GBP",
+                target: {
+                  currency: "GBP",
+                  minorUnits: newGoal.target,    
                 },
-                "base64EncodedPhoto": "string"
+                base64EncodedPhoto: "string"
               })
         })
             .then(response => response.json())
@@ -98,11 +92,20 @@ export default function NewGoal(props) {
                     <TextField
                         placeholder="Saving-goal target "
                         name="target"
+                        error={newGoal.target == "0"}
+                        helperText={newGoal.target == "0" ? 'Zero field!' : ' '}
+                        value={newGoal.target}
+                        InputProps={{ inputProps: { type: "number", min: 1 } }}
                         onChange={handleChange}
                         >
                     </TextField> 
                     <Button
-                    onClick={newSaving}>
+                    // onClick={newSaving}>
+                    onClick={() => {
+                        if(newGoal.target!=0){
+                            newSaving()
+                        }
+                        }}>
                         Save
                     </Button>
                 </div>
