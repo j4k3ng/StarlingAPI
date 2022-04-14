@@ -118,7 +118,7 @@ export default function Data(props) {
         //Runs only when average updates
         props.average(average)
     }, [average]);
-    
+
     return (
         <div>
             <div className="calendar">

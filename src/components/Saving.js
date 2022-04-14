@@ -5,8 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 export default function Saving(props) {
-    const accountUid = props.accountUid
-    const url = `https://api-sandbox.starlingbank.com/api/v2/account/${accountUid}/savings-goals`
+    const url = `https://api-sandbox.starlingbank.com/api/v2/account/${props.accountUid}/savings-goals`
     const [goal, setGoal] = React.useState([]);
     const [renderFromChild, setRenderFromChild] = React.useState(false)
     
@@ -22,6 +21,12 @@ export default function Saving(props) {
                 return (
                     <Goal
                         goal={item}
+                        accountUid={props.accountUid}
+                        average={props.average}
+                        token={props.token}
+                        callbackHandle={()=>{
+                            setRenderFromChild(prevValue => !prevValue)
+                        }}
                     />
                 )
             })
@@ -29,7 +34,7 @@ export default function Saving(props) {
             // setGoal(prevValue => [...prevValue, cards])
         }
         getData()
-    }, [accountUid,renderFromChild]);
+    }, [props.accountUid,renderFromChild]);
 
     function fetchSaving() {
         console.log(url)
@@ -58,7 +63,7 @@ export default function Saving(props) {
             </div>
             <NewGoal 
                 goal={goal} 
-                uid={accountUid} 
+                uid={props.accountUid} 
                 token={props.token}
                 callbackHandle={()=>{
                     setRenderFromChild(prevValue => !prevValue)

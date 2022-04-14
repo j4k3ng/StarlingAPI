@@ -51,7 +51,7 @@ export default function App() {
             <div> 
                 {
                     average &&
-                    <Saving accountUid={loginData.uid} token={loginData.token}/>
+                    <Saving accountUid={loginData.uid} token={loginData.token} average={average}/>
                 }
             </div>
         </div>
