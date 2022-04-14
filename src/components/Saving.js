@@ -58,7 +58,7 @@ export default function Saving(props) {
             <div>
                 <h2> Send this amount into an existing saving or create a new one </h2>
             </div>
-            <div className="card--list">
+            <div className="goal--list">
                 {goal}
             </div>
             <NewGoal 

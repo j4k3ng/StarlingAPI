@@ -9,9 +9,10 @@ export default function Data(props) {
         startDate: new Date(),
         endDate: new Date()
     })
-    const [average, setAvg] = React.useState()
-
-    function printurl(){
+    const [average, setAverage] = React.useState()
+    const [noDataAvailable, SetNoDataAvailable] = React.useState(false)
+    
+    function showAverage(){
         const accountUid = props.accountUid;
         const feed_url = `https://api-sandbox.starlingbank.com/api/v2/feed/account/${accountUid}/settled-transactions-between?`
         const time = "T00%3A00%3A00.000Z"
@@ -88,13 +89,28 @@ export default function Data(props) {
                 'Authorization': `Bearer ${props.token}`
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                if(response.status!=200){
+                    SetNoDataAvailable(true)
+                    return
+                }
+                return response.json()
+            })
             .then(data => {
-                console.log(data)
-                average(data.feedItems)
+                console.log(data== undefined )
+                if(data==undefined ||
+                    data.feedItems.length<1){
+                    console.log("si")
+                    SetNoDataAvailable(true) 
+                    setAverage("")
+                    return
+                }
+                SetNoDataAvailable(false)
+                getAverage(data.feedItems)
             })
 
-        function average(array){
+        function getAverage(array){
             let sum = 0;
             let count = 0;
             for(let i = 0; i < array.length; i++){
@@ -110,7 +126,7 @@ export default function Data(props) {
             let avg = sum/count
             avg = Math.round(avg*100)/100
             console.log("the average is "+avg)
-            setAvg(avg)
+            setAverage(avg)
         }
     }
 
@@ -122,12 +138,13 @@ export default function Data(props) {
     return (
         <div>
             <div className="calendar">
-                <h2 className="calendar--text">Select a  statement week period</h2>
+                <h2>Select a billing week</h2>
                 <div className="calendar--dates">
-                    <TextField className="calendar--startdate" 
-                        // label="Start date"
+                    <TextField  
+                        label="Start Date"
+                        InputLabelProps={{ shrink: true, required: true }}
                         variant="outlined" 
-                        color="secondary" 
+                        color="primary" 
                         type="date"
                         name="startDate" 
                         value = {input.startDate}
@@ -136,10 +153,10 @@ export default function Data(props) {
                     <div>
                         {
                             showEndDate &&
-                            <TextField className="calendar--enddate"
-                                // label="End Date"
+                            <TextField
+                                label="End Date"
                                 variant="outlined" 
-                                color="secondary" 
+                                color="primary" 
                                 type="date"
                                 name="endDate" 
                                 InputProps={{ readOnly: true }}
@@ -149,23 +166,30 @@ export default function Data(props) {
                         }
                     </div>
                 </div>
-                <Button className="calendar--button"
+                <Button
                     color="primary" 
                     size="large" 
                     variant="contained"
-                    onClick={printurl}
+                    onClick={showAverage}
                     >   
                     Select
                 </Button>
                 <div>
                     {
-                        average &&
+                        average && noDataAvailable==false &&
                         <div>
-                            <h1> Your average out transaction is </h1>
-                            <h1>£ {average}</h1>
+                            <h1>Your average out transaction is</h1>
+                            <h1>£ {average} </h1>
                         </div>
                     }
                 </div>
+                <div>
+                    {
+                        noDataAvailable &&
+                        <h1>No transactions found</h1>
+                    }
+                </div>
+
             </div>
         </div>
     )

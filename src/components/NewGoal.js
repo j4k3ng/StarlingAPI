@@ -52,7 +52,7 @@ export default function NewGoal(props) {
                 currency: "GBP",
                 target: {
                   currency: "GBP",
-                  minorUnits: newGoal.target,    
+                  minorUnits: newGoal.target*100,    
                 },
                 base64EncodedPhoto: "string"
               })
@@ -82,15 +82,15 @@ export default function NewGoal(props) {
             </Tooltip>
             {
                 show &&
-                <div className="card--form">
+                <div className="goal--form">
                     <TextField
-                        placeholder="Saving-goal name"
+                        placeholder="name"
                         name="name"
                         onChange={handleChange}
                         >
                     </TextField> 
                     <TextField
-                        placeholder="Saving-goal target "
+                        placeholder="target "
                         name="target"
                         error={newGoal.target == "0"}
                         helperText={newGoal.target == "0" ? 'Zero field!' : ' '}

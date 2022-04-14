@@ -8,7 +8,7 @@ export default function Login(props) {
     const accountHolderName_url = "account-holder/name"
     const uid_url = base_url + account_url
     const name_url = base_url + accountHolderName_url
-
+    const [loginError, setLoginError] = React.useState(false)
     const [loginInput, setLoginInput] = React.useState({
         token: "",
         uid: "",
@@ -33,6 +33,13 @@ export default function Login(props) {
             fetch(uid_url, { headers: header })
         ]).
             then(response => {
+                if(response[0].status!=200 || response[1].status!=200){
+                    console.log("una no")
+                    setLoginError(true)
+                    return
+                }
+                setLoginError(false)
+                console.log(response)
                 response[0].json().then(data => {
                     setLoginInput(prevInput => ({
                         ...prevInput,
@@ -65,6 +72,8 @@ export default function Login(props) {
                 margin="normal"
                 variant="outlined"
                 color="primary"
+                error={loginError}
+                helperText={loginError? 'Insert a valid token':''}
                 InputProps={{ style: { fontSize: 20, color: 'black' } }}
                 InputLabelProps={{ style: { fontSize: 20 } }}
                 name="token"
@@ -73,7 +82,7 @@ export default function Login(props) {
                 multiline
             />
             <Button
-                color="secondary"
+                color="primary"
                 size="large"
                 variant="contained"
                 name="button"

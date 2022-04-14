@@ -2,6 +2,7 @@ body {
   font-family: Universal Sans, sans-serif;
   margin: 0;
   background: white;
+  align-items: center;
 }
 
 .header {
@@ -26,7 +27,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* height: 65px; */
   padding: 20px;
 
 }
@@ -44,38 +44,34 @@ body {
   display: flex; 
   flex-direction:column; 
   align-items: center;
-  /* height: 65px; */
   padding: 20px;
-}
-
-.calendar--text{
-  display: flex;
-  align-items: center;
+  gap: 20px;
 }
 
 .calendar--dates{
-    display: flex;
+  display: flex;
   flex-direction:row;
   align-items: center;
-  /* height: 65px; */
   padding: 20px;
+  gap: 20px;
 }
 
 .saving {
   display: flex; 
   flex-direction:column; 
   align-items: center;
-  /* height: 65px; */
   padding: 20px;
 }
 
-.card {
+.goal {
   display: flex; 
   flex-direction:column;
+  align-items: center;
+  margin: auto;
   gap: 20px;
   overflow-x: auto; 
 }
-.card--list {
+.goal--list {
   display: flex; 
   flex-direction:row;
   flex-flow: wrap;
@@ -83,7 +79,7 @@ body {
   overflow-x: auto; 
 }
 
-.card--form{
+.goal--form{
   display: flex; 
   flex-direction:column;
   overflow-x: auto;
@@ -94,7 +90,6 @@ body {
   display: flex; 
   flex-direction:column; 
   align-items: center;
-  /* height: 65px; */
   padding: 20px;
 }
 
