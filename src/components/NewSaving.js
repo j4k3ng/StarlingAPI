@@ -13,33 +13,16 @@ const useStyles = makeStyles ({
     },
   });
   
-export default function NewGoal(props) {
+export default function NewSaving(props) {
     const [show, setShow] = React.useState(false)
     const accountUid = props.uid
     const url = `https://api-sandbox.starlingbank.com/api/v2/account/${accountUid}/savings-goals`
-    const [newGoal, setNewGoal] = React.useState({
+    const [newSaving, setNewSaving] = React.useState({
         name: "",
         target: ""  
     })
-    const classes = useStyles()
 
-    function handleChange(event) {
-        console.log(event)
-        const { name, value } = event.target
-        setNewGoal(prevValue => {
-            let obj = { 
-            ...prevValue,
-            [name]: value
-            }
-            return obj
-        })
-    }
-
-    function printing(event) {
-        setShow(prevState => !prevState)
-    }
-
-    function newSaving() {
+    function sendNewSaving() {
         let newsave = fetch(url, {
             method: 'PUT',
             headers: {
@@ -48,34 +31,47 @@ export default function NewGoal(props) {
                 'Authorization': `Bearer ${props.token}`
             },
             body: JSON.stringify({
-                name: newGoal.name,
+                name: newSaving.name,
                 currency: "GBP",
                 target: {
                   currency: "GBP",
-                  minorUnits: newGoal.target*100,    
+                  minorUnits: newSaving.target*100,    
                 },
                 base64EncodedPhoto: "string"
               })
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 props.callbackHandle()
                 return data
             })
         return newsave
     }
 
+    function showForm() {
+        setShow(prevState => !prevState)
+    }
+
+    function handleChange(event) {
+        const { name, value } = event.target
+        setNewSaving(prevValue => {
+            let obj = { 
+            ...prevValue,
+            [name]: value
+            }
+            return obj
+        })
+    }
+
     return (
-        <div className="newgoal">
+        <div className="newsaving">
             <Tooltip title="">
                 <Button 
-                    //className={classes.root}
                     style={{ maxWidth: '550px', minWidth: '150px', minHeight:'50px'}}
                     size="large"
                     color="primary"
                     variant="contained"
-                    onClick={printing}
+                    onClick={showForm}
                 >
                     New
                 </Button>
@@ -83,7 +79,7 @@ export default function NewGoal(props) {
             </Tooltip>
             {
                 show &&
-                <div className="goal--form">
+                <div className="newsaving--form">
                     <TextField
                         placeholder="name"
                         name="name"
@@ -91,19 +87,19 @@ export default function NewGoal(props) {
                         >
                     </TextField> 
                     <TextField
-                        placeholder="target "
+                        placeholder="target"
                         name="target"
-                        error={newGoal.target == "0"}
-                        helperText={newGoal.target == "0" ? 'Zero field!' : ' '}
-                        value={newGoal.target}
+                        error={newSaving.target == "0"}
+                        helperText={newSaving.target == "0" ? 'Zero field!' : ' '}
+                        value={newSaving.target}
                         InputProps={{ inputProps: { type: "number", min: 1 } }}
                         onChange={handleChange}
                         >
                     </TextField> 
                     <Button
                         onClick={() => {
-                            if(newGoal.target!=0){
-                                newSaving()
+                            if(newSaving.target!=0){
+                                sendNewSaving()
                             }
                         }}>
                         Save

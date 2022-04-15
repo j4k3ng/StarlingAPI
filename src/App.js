@@ -1,11 +1,11 @@
 import React from "react"
 import Header from "./components/Header"
-import Data from "./components/Data"
+import Calendar from "./components/Calendar"
 import Login from "./components/Login"
-import Saving from "./components/Saving"
+import ShowSaving from "./components/ShowSaving"
 
 export default function App() {
-    
+
     const [loginData, setLoginData] = React.useState({
         token: "",
         uid: "",
@@ -14,22 +14,10 @@ export default function App() {
     const [average, setAverage] = React.useState()
 
     function loginCallback(childData) {
-        //the only problem is that useEffect run the first time when is empty
-
-        // const handleSomething = (values) => {
-        //     values.map((value) => {
-        //       setMyState((oldValue) => [...oldValue, { key: value.dataWhatYouWant }]);
-        //     }
-        // }}
-
-        // let keys = Object.keys(childData);
-        // console.log(childData)
-        console.log(childData)
         setLoginData(childData)
     }
 
-    function averageCallback(childData){
-        console.log(childData)
+    function averageCallback(childData) {
         setAverage(childData)
     }
 
@@ -45,13 +33,19 @@ export default function App() {
             <div>
                 {
                     loginData.token &&
-                    <Data accountUid={loginData.uid} token={loginData.token} average={averageCallback}/>
+                    <Calendar
+                        accountUid={loginData.uid}
+                        token={loginData.token}
+                        average={averageCallback} />
                 }
             </div>
-            <div> 
+            <div>
                 {
                     average &&
-                    <Saving accountUid={loginData.uid} token={loginData.token} average={average}/>
+                    <ShowSaving
+                        accountUid={loginData.uid}
+                        token={loginData.token}
+                        average={average} />
                 }
             </div>
         </div>

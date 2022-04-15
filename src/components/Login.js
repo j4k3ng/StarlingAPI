@@ -15,13 +15,6 @@ export default function Login(props) {
         name: ""
     })
 
-    function handleChange(event) {
-        setLoginInput(prevInput => ({
-            ...prevInput,
-            token: event.target.value
-        }))
-    }
-
     function fetchLogin(event) {
         const header = {
             'Accept': 'application/json',
@@ -34,12 +27,10 @@ export default function Login(props) {
         ]).
             then(response => {
                 if(response[0].status!=200 || response[1].status!=200){
-                    console.log("una no")
                     setLoginError(true)
                     return
                 }
                 setLoginError(false)
-                console.log(response)
                 response[0].json().then(data => {
                     setLoginInput(prevInput => ({
                         ...prevInput,
@@ -63,6 +54,13 @@ export default function Login(props) {
             name: loginInput.name
         })
     }, [loginInput.uid]);
+
+    function handleChange(event) {
+        setLoginInput(prevInput => ({
+            ...prevInput,
+            token: event.target.value
+        }))
+    }
 
     return (
         <div className="login">
