@@ -154,8 +154,8 @@ export default function Calendar(props) {
                     {
                         average && noDataAvailable == false &&
                         <div>
-                            <h2>your weekly average expense is <h1> £ {average} </h1></h2>
-
+                            <h2>your weekly average expense is </h2>
+                            <h1 className="calendar--average"> £ {average} </h1>
                         </div>
                     }
                     {
