@@ -1,28 +1,30 @@
 import React from "react"
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { makeStyles } from "@material-ui/core";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@material-ui/core/Tooltip'
 
-const useStyles = makeStyles ({
-    root: {
-      '&:hover': {
-         backgroundColor: "#51e76f",
-         textDecoration: 'none', 
-      },
-    },
-  });
-  
 export default function NewSaving(props) {
+    /**
+     * Allows the creating of a new saving account
+     *
+     * @param {object} saving send the new saving to ShowSaving.js
+     * @param {object} (props.accountUid, props.token) needed to create
+     * a new saving account
+     * @param {function} callbackHandle is the callback to force rerendering form child to parent
+     * @return {component} all the savings account and the new button.
+     */
     const [show, setShow] = React.useState(false)
     const accountUid = props.uid
     const url = `https://api-sandbox.starlingbank.com/api/v2/account/${accountUid}/savings-goals`
     const [newSaving, setNewSaving] = React.useState({
         name: "",
-        target: ""  
+        target: ""
     })
 
     function sendNewSaving() {
+        /**
+         * Generate a new savign by fetching the API 
+         */
         let newsave = fetch(url, {
             method: 'PUT',
             headers: {
@@ -34,11 +36,11 @@ export default function NewSaving(props) {
                 name: newSaving.name,
                 currency: "GBP",
                 target: {
-                  currency: "GBP",
-                  minorUnits: newSaving.target*100,    
+                    currency: "GBP",
+                    minorUnits: newSaving.target * 100,
                 },
                 base64EncodedPhoto: "string"
-              })
+            })
         })
             .then(response => response.json())
             .then(data => {
@@ -49,15 +51,21 @@ export default function NewSaving(props) {
     }
 
     function showForm() {
+        /**
+          * Shows or hide the new saving input form
+          */
         setShow(prevState => !prevState)
     }
 
     function handleChange(event) {
+        /**
+         * Rerender the new saving input date while user type
+         */
         const { name, value } = event.target
         setNewSaving(prevValue => {
-            let obj = { 
-            ...prevValue,
-            [name]: value
+            let obj = {
+                ...prevValue,
+                [name]: value
             }
             return obj
         })
@@ -66,8 +74,8 @@ export default function NewSaving(props) {
     return (
         <div className="newsaving">
             <Tooltip title="">
-                <Button 
-                    style={{ maxWidth: '550px', minWidth: '150px', minHeight:'50px'}}
+                <Button
+                    style={{ maxWidth: '550px', minWidth: '150px', minHeight: '50px' }}
                     size="large"
                     color="primary"
                     variant="contained"
@@ -75,7 +83,7 @@ export default function NewSaving(props) {
                 >
                     New
                 </Button>
-                
+
             </Tooltip>
             {
                 show &&
@@ -84,8 +92,8 @@ export default function NewSaving(props) {
                         placeholder="name"
                         name="name"
                         onChange={handleChange}
-                        >
-                    </TextField> 
+                    >
+                    </TextField>
                     <TextField
                         placeholder="target"
                         name="target"
@@ -94,11 +102,11 @@ export default function NewSaving(props) {
                         value={newSaving.target}
                         InputProps={{ inputProps: { type: "number", min: 1 } }}
                         onChange={handleChange}
-                        >
-                    </TextField> 
+                    >
+                    </TextField>
                     <Button
                         onClick={() => {
-                            if(newSaving.target!=0){
+                            if (newSaving.target != 0) {
                                 sendNewSaving()
                             }
                         }}>

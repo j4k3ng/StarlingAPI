@@ -5,7 +5,9 @@ import Login from "./components/Login"
 import ShowSaving from "./components/ShowSaving"
 
 export default function App() {
-
+    /**
+     * Returns the whole app
+     */
     const [loginData, setLoginData] = React.useState({
         token: "",
         uid: "",
@@ -14,10 +16,20 @@ export default function App() {
     const [average, setAverage] = React.useState()
 
     function loginCallback(childData) {
+    /**
+     * Updates the login data from Login.js
+     *
+     * @param {object} childData the updated loginData.
+     */
         setLoginData(childData)
     }
 
     function averageCallback(childData) {
+     /**
+     * Updates the average amount from Calendar.js
+     *
+     * @param {number} childData the updated average.
+     */       
         setAverage(childData)
     }
 

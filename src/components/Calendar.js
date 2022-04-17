@@ -3,54 +3,34 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 export default function Calendar(props) {
-
+    /**
+     * Renders a selectable calendar and fetch the transactions
+     * in the selected period.
+     *
+     * @param {object} props inlcudes the accountUid and token from App.js 
+     * @param {function} props is the callback function to update 
+     * the average in App.js.
+     * @return {component} the Calendar page.
+     */
+    const accountUid = props.accountUid;
+    const [average, setAverage] = React.useState()
+    const [noDataAvailable, SetNoDataAvailable] = React.useState(false) // alert if no data available
     const [showEndDate, setShowEndDate] = React.useState(false)
     const [input, setInput] = React.useState({
         startDate: new Date(),
         endDate: new Date()
     })
-    const [average, setAverage] = React.useState()
-    const [noDataAvailable, SetNoDataAvailable] = React.useState(false)
+    const feed_url = `https://api-sandbox.starlingbank.com/api/v2/feed/account/${accountUid}/settled-transactions-between?`
+    const time = "T00%3A00%3A00.000Z" //hardcode to midnight
+    const start = "minTransactionTimestamp=" + input.startDate + time
+    const end = "maxTransactionTimestamp=" + input.endDate + time
+    const url = feed_url + start + "&&" + end
 
-    function showAverage() {
-        const accountUid = props.accountUid;
-        const feed_url = `https://api-sandbox.starlingbank.com/api/v2/feed/account/${accountUid}/settled-transactions-between?`
-        const time = "T00%3A00%3A00.000Z"
-        const start = "minTransactionTimestamp=" + input.startDate + time
-        const end = "maxTransactionTimestamp=" + input.endDate + time
-        const url = feed_url + start + "&&" + end
-        fetchData(url)
-    }
-
-    function calculateEndDate() {
-
-        let result = new Date(input.startDate);
-        result.setDate(result.getDate() + 7);
-        let Month = result.getMonth()
-
-        if (Month < 11) {
-            Month = Month + 1
-        } else {
-            Month = 1
-        }
-        if (Month < 10) {
-            Month = String("0" + Month)
-        }
-
-        let Year = result.getFullYear()
-        let Day = result.getDate()
-
-        if (Day < 10) {
-            Day = String("0" + Day)
-        }
-
-        setInput(prevInput => ({
-            ...prevInput,
-            endDate: Year + "-" + Month + "-" + Day
-        }))
-    }
-
-    function fetchData(url) {
+    function fetchAverage() {
+        /**
+         * Get all the transactions by fetching the API and
+         * calculate the average spent in the selected week.f
+         */
         fetch(url, {
             headers: {
                 'Accept': 'application/json',
@@ -72,37 +52,82 @@ export default function Calendar(props) {
                     return
                 }
                 SetNoDataAvailable(false)
-                getAverage(data.feedItems)
+                calculateAverage(data.feedItems)
             })
+    }
 
-        function getAverage(array) {
-            let sum = 0;
-            let count = 0;
-            for (let i = 0; i < array.length; i++) {
-                if (array[i].direction == "OUT") {
-                    count += 1
-                    let value = parseInt(array[i].amount.minorUnits)
-                    sum += value
-                }
+    function calculateAverage(transactions) {
+        /**
+         * Calculate the average spent in a week.
+         *
+         * @param {array} transaction includes all the transacitons in 
+         * the selected billing period
+         */
+        let sum = 0
+        let count = 0
+        for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].direction == "OUT") {
+                count += 1
+                let value = parseInt(transactions[i].amount.minorUnits)
+                sum += value
             }
-            sum = sum / 100;
-            let avg = sum / count
-            avg = Math.round(avg * 100) / 100
-            setAverage(avg)
         }
+        sum = sum / 100
+        let avg = sum / count
+        avg = Math.round(avg * 100) / 100
+        setAverage(avg)
+    }
+
+
+    function calculateEndDate() {
+        /**
+         * Calculate the end date from the start date input.
+         */
+        let result = new Date(input.startDate)
+        result.setDate(result.getDate() + 7) //add 7 days
+        let Month = result.getMonth()
+
+        if (Month < 11) {
+            Month = Month + 1
+        } else {
+            Month = 1
+        }
+        if (Month < 10) {
+            Month = String("0" + Month)
+        }
+
+        let Year = result.getFullYear()
+        let Day = result.getDate()
+
+        if (Day < 10) {
+            Day = String("0" + Day)
+        }
+        // set the end date with the correct format
+        setInput(prevInput => ({
+            ...prevInput,
+            endDate: Year + "-" + Month + "-" + Day
+        }))
     }
 
     React.useEffect(() => {
-        //Runs only when average updates
+        /**
+         * Updates the average into th parent component App.js
+         * when average changes.
+         */
         props.average(average)
     }, [average]);
 
     React.useEffect(() => {
-        //Runs only when loginInput.uid change
+        /**
+         * Updates the end date when start date change
+         */
         calculateEndDate()
     }, [input.startDate]);
 
     function handleChange(event) {
+        /**
+         * Rerender the input date while user type
+         */
         const { name, value } = event.target
         setInput(prevInput => ({
             ...prevInput,
@@ -146,7 +171,7 @@ export default function Calendar(props) {
                     color="primary"
                     size="large"
                     variant="contained"
-                    onClick={showAverage}
+                    onClick={fetchAverage}
                 >
                     Select
                 </Button>

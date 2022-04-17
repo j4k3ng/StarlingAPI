@@ -3,19 +3,30 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 export default function Login(props) {
+    /**
+     * Allows the user to enter its token and logging in.
+     *
+     * @param {function} props is the callback function to update 
+     * the login data in App.js.
+     * @return {component} the login page.
+     */
     const base_url = "https://api-sandbox.starlingbank.com/api/v2/"
     const account_url = "accounts"
     const accountHolderName_url = "account-holder/name"
     const uid_url = base_url + account_url
     const name_url = base_url + accountHolderName_url
-    const [loginError, setLoginError] = React.useState(false)
+    const [loginError, setLoginError] = React.useState(false) //true with invalid token
     const [loginInput, setLoginInput] = React.useState({
         token: "",
         uid: "",
         name: ""
     })
 
-    function fetchLogin(event) {
+    function fetchLogin() {
+        /**
+         * Get the accountUid and account holder name from the user 
+         * login data by fetching the API.
+         */
         const header = {
             'Accept': 'application/json',
             'Authorization': `Bearer ${loginInput.token}`,
@@ -47,7 +58,10 @@ export default function Login(props) {
     }
 
     React.useEffect(() => {
-        //Runs only when loginInput.uid change
+        /**
+         * Updates the login data into th parent component App.js
+         * when the input data change.
+         */
         props.login({
             token: loginInput.token,
             uid: loginInput.uid,
@@ -56,6 +70,9 @@ export default function Login(props) {
     }, [loginInput.uid]);
 
     function handleChange(event) {
+     /**
+     * Rerender token input while user type
+     */
         setLoginInput(prevInput => ({
             ...prevInput,
             token: event.target.value

@@ -6,6 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
+// customizing material-ui style
 const useStyles = makeStyles({
     root: {
         '&:hover': {
@@ -17,11 +18,26 @@ const useStyles = makeStyles({
 });
 
 export default function Saving(props) {
+    /**
+     * Allows transfering money to a saving account..
+     *
+     * @param {array} props.item inclued the name, target and currency of the saving account.
+     * @param {object} (props.saving, props.accountUid, props.average) are needed to 
+     * transfer money into the saving account 
+     * @param {function} callbackHandle is the callback to force rerendering form child to parent 
+     * @return {component} the Saving component.
+     */
     const classes = useStyles()
-    const [sent, setSent] = React.useState(false)
-    const [noFounds, setNoFounds] = React.useState(false)
+    const [sent, setSent] = React.useState(false) // check if sent
+    const [noFounds, setNoFounds] = React.useState(false) // check founds availability
 
     function sendMoney(event) {
+        /**
+         * Send money into a saving acount by clicking it.
+         *
+         * @param {object} event is the caputer user click of the selected
+         * saving account.
+         */
         const transferUid = generateUUID()
         const savingsGoalUid = event.currentTarget.id;
         const url = `https://api-sandbox.starlingbank.com/api/v2/account/${props.accountUid}/savings-goals/${savingsGoalUid}/add-money/${transferUid}`
@@ -57,6 +73,11 @@ export default function Saving(props) {
     }
 
     function generateUUID() { // Public Domain/MIT
+        /**
+         * Generate a random UUID
+         *
+         * @param {string} UUID 
+         */
         var d = new Date().getTime();//Timestamp
         var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
