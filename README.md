@@ -1,6 +1,6 @@
 # STARLING API SAVING
 > Add money into a saving account on Starling Bank.
-> Live demo [_here_](https://98ubuo.csb.app/).
+> Live demo [_here_](https://csb-c0kc36.netlify.app/). NB: running the app without a PROXY will result on CORES error during API calls. It is also possible to overcome this problem with a chrome extension called  [_CORS unblock_](https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en) which twich the pre-flight call.   
 
 ## Table of Contents
 * [General Info](#general-information)
