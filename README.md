@@ -12,8 +12,7 @@
 
 
 ## General Information
-- This project intend to fulfill a challenge given by Starling Bank to candidates for a SE role.
-- The challenge constists on creating a web app capable to average the money spent by a customer in a given week and put send this amount in a saving account using the Starling Bank public [_API_](https://developer.starlingbank.com/docs).
+- The project constists on creating a web app capable to average the money spent by a customer in a given week and put send this amount in a saving account using the Starling Bank public [_API_](https://developer.starlingbank.com/docs).
 
 
 ## Technologies Used
